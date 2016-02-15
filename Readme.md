@@ -7,7 +7,7 @@ In this project, you will evaluate several barrier synchronization algorithms pr
 
 1. Gain access to a well-maintained linux machine.  If you do not have this already, then it is recommended that you follow the [instructions](/wiki/ud156_virtualbox) for downloading and installing VirtualBox and the AOS Virtual Image.
  
-2. Download the starter source code by cloning it from this repository. Old Links, no longer active: [barrier.tar.gz](https://t-square.gatech.edu/access/content/group/gtc-6986-478d-546f-8ee0-ed0661a439c3/barrier.tar.gz)
+2. Download the starter source code by cloning it from this repository. 
 3. Check that OpenMP is installed with
 
     ldconfig -p | grep libgomp
