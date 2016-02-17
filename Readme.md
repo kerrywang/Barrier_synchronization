@@ -5,7 +5,7 @@ In this project, you will evaluate several barrier synchronization algorithms pr
 * * *
 ## Setup
 
-1. Gain access to a well-maintained linux machine.  If you do not have this already, then it is recommended that you follow the [instructions](/wiki/ud156_virtualbox) for downloading and installing VirtualBox and the AOS Virtual Image.
+1. Gain access to a well-maintained linux machine.  If you do not have this already, then it is recommended that you follow the [instructions](https://www.udacity.com/wiki/ud156-virtualbox) for downloading and installing VirtualBox and the AOS Virtual Image.
  
 2. Download the starter source code by cloning it from this repository. 
 3. Check that OpenMP is installed with
