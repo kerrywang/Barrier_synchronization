@@ -221,6 +221,20 @@ Your tasks are the following:
 <tr><td>Re:_MPI_Barrier.txt</td><td>10%</td></tr>
 </table>
 
+## Deliverables
+
+Your submission should have the following eight files. Do not change the name of the files.
+     - gtmp_counter.c
+     - gtmp_mcs.c
+     - gtmp_tree.c
+     - Re:_OpenMP_Barrier.txt
+     - gtmpi_dissemination.c
+     - gtmpi_tournament.c
+     - gtmpi_counter.c
+     - Re:_MPI_Barrier.txt
+
+Zip all the eight files into a file named FirstName_LastName_p2.zip.
+
 
 ## FAQs
 
