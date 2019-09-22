@@ -305,7 +305,7 @@ sudo apt-get install gnuplot-nox
 
 	Yes, The algorithm (as presented in the pseudocode) will work with numbers of processors that aren't a power of 2.
 
-## Tips from a previous student
+## Tips (from a previous student, Joves)
 
 1. First, get yourself a Linux system.  Either bare metal or a VM.  The one you used for project 1 will work.  There's also a VM you can download and install in VirtualBox that is linked in the project readme.  I'm using my project 1 VM. If you set up your own environment, make sure you install the libraries needed.
 
