@@ -1,6 +1,6 @@
 <h1>Barrier Synchronization</h1>
 * * *
-In this project, you will evaluate several barrier synchronization algorithms presented in [“Algorithms for Scalable Synchronization on Shared-Memory Multiprocessors” by Mellor-Crummey and Scott.](http://www.cs.rice.edu/~johnmc/papers/tocs91.pdf)  To do this, you will implement some of them using OpenMP and MPI, standard frameworks for parallel programming in shared memory and distributed architectures, and then evaluate some experimental results.
+In this project, you will evaluate several barrier synchronization algorithms presented in [“Algorithms for Scalable Synchronization on Shared-Memory Multiprocessors” by Mellor-Crummey and Scott.](http://www.cs.rice.edu/~johnmc/papers/tocs91.pdf). To do this, you will implement some of them using OpenMP and MPI, standard frameworks for parallel programming in shared memory and distributed architectures, and then evaluate some experimental results. 
 
 * * *
 ## Setup
@@ -105,11 +105,7 @@ The code for the project uses OpenMP for the shared memory experiments, but the 
 * [Using OpenMP](http://mitpress.mit.edu/books/using-openmp) and [Examples (zip file)](http://openmp.org/examples/Using-OpenMP-Examples-Distr.zip)
 * [Atomic Built-ins](http://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html)
 
-Your tasks for this part of the project are to:
-1. Complete the implementation of the counter barrier in gtmp_counter.c
-2. Complete the implementation of the MCS tree in gtmp_mcs.c
-3. Improve the performance of the tree barrier implementation in gtmp_tree.c and explain why your implementation will run faster in the comments.
-4. Reply to the email in the file Re:_OpenMP_Barrier.txt.
+For sample code, check out [hello_openmp.c](https://github.gatech.edu/smathew60/oms-aos-barrier/blob/master/hello_openmp.c)
 
 * * *
 ## Distributed Memory with MPI
@@ -191,6 +187,10 @@ As you program, think about which messages passing functions should be synchrono
 * [Wikipedia on MPI](http://en.wikipedia.org/wiki/Message_Passing_Interface)
 * [Tutorial](https://computing.llnl.gov/tutorials/mpi/)
 
+Note that your should only use MPI's point-to-point communication procedures (i.e. MPI_Isend, MPI_Irecv, MPI_Send, MPI_Recv, NOT MPI_BCast, MPI_Gather, etc.)
+
+For sample code, check out [hello_mpi.c](https://github.gatech.edu/smathew60/oms-aos-barrier/blob/master/hello_mpi.c)
+
 ---
 ## Tasks
 Your tasks are the following:
@@ -199,8 +199,13 @@ Your tasks are the following:
 2. Complete the implementation of the tournament algorithm in gtmpi_tournament.c.
 3. Improve the implementation of the counter in gtmpi_counter.c.
 4. Reply to the email Re:_MPI_Barrier.txt.
+    - Analyze GTMPI_Data.csv and provide your insights.
+5. Complete the implementation of the counter barrier in gtmp_counter.c
+6. Complete the implementation of the MCS tree in gtmp_mcs.c
+7. Improve the performance of the tree barrier implementation in gtmp_tree.c and explain why your implementation will run faster in the comments.
+8. Reply to the email in the file Re:_OpenMP_Barrier.txt.
+    - Analyze GTMP_Data.csv and provide your insights.
 
-Note that your should only use MPI's point-to-point communication procedures (i.e. MPI_Isend, MPI_Irecv, MPI_Send, MPI_Recv, NOT MPI_BCast, MPI_Gather, etc.)
 
 ## Grading
 
@@ -215,3 +220,87 @@ Note that your should only use MPI's point-to-point communication procedures (i.
 <tr><td>gtmpi_counter.c</td><td>10%</td></tr>
 <tr><td>Re:_MPI_Barrier.txt</td><td>10%</td></tr>
 </table>
+
+
+## FAQs
+
+-	What are the csv files?  It sounds like they are part of the email and we should respond based on those results?  Do we not use our own results to respond?
+
+	Csv files provide data that must be used to analyse and answer parts Re:_OpenMP_Barrier.txt and Re:_MPI_Barrier.txt. You need to make your analysis based on this data, and not on your own results.
+
+-	What are the gnu files?
+
+	Gnu files help plot these csv files.
+
+-	What is Network.txt for?
+
+	Use this information for analysis/reasoning of csv data if required.
+
+- What are the hello files for?
+
+	Hello files are simple examples to help you get started on Open_MP and OpenMPI.
+
+- Each of the algorithm files are just init, barrier, and finalize.  Do these files get called or included somehow?  Are we supposed to add a main? Are we supposed to make use of the provided Makefile?  Do we edit it?
+
+	You need to edit the Makefile, to compile your barrier functions. You are supposed to test the functionality and correctness of these barriers on your own. There is no need to provide main function because we will be using our own test harness. Students have to supply only the functions in the requested files. Your code is written as a library, but you have to write separate code with mains that will make use of your library.  This separate code is not passed in.
+
+-	Can you release your test harness?
+
+	We can not release our test harness. You need to come up with your own test harness. If you want, you can share your harness with other students.
+
+-	For project 2, are we required to follow the exact pseudocode from the paper? 
+
+	As long as you don't deviate from how an algorithm is supposed to work, you should be fine!
+
+-	Can we use sched_yield to improve performance?
+
+	Yes you can. Just edit the makefile accordingly.
+
+- Are we allowed to use the OMP threadprivate declaration?
+	Yes, you can.
+
+-	When I attempt to run the gtmp_tree algorithm using the test harness I am getting a heap bufferflow out of the box without any modifications. Is this expected?
+
+	The error is because the algorithm doesn't work for 1 thread.
+ 
+-	I am facing errors as in I encounter a problem where the -np options just don't seem to work. What is wrong?
+
+	Environment variables aren't being set up properly. Follow the commands:
+
+	>sudo apt remove libopenmpi-dev openmpi-bin
+sudo apt purge mpich
+sudo apt install mpich
+
+-	Are we allowed to use code or function snippets from the internet?
+
+	Cite, cite and cite! As long as your reference isn't giving out the explicit solution to what's asked in the assignment, you should be fine.
+
+-	For both *_Data.csv files, am I correct in assuming that the units are in micro seconds?
+
+	No. The units are in seconds.
+
+-	I am having trouble with plotting GNU files. What can I do?
+
+	One of the ways is:
+	
+	Install the packages:
+
+	>sudo apt-get install gnuplot
+sudo apt-get install gnuplot-nox
+
+	Edit the gnu files to generate a pdf, set the terminal and output towards the top of the file. Also, you can delete the set timefmt lines, if they are causing an error.
+
+	>set terminal pdf
+	set output "mp_plot.pdf"
+
+	Run gnuplot to generate the pdf graph
+
+	>gnuplot mp_plot.gnu
+
+-	I don't understand what the parity in disseminated barrier does. From the pseudo code the barrier uses two sets of flags alternatively for consecutive barriers. Why it needs two sets of flags?
+
+	If you are trying to implement with mpi I'd skip looking at parity and the flags and focus on what the lecture describes. The parity ensures that the sense variable is only changed every other barrier. Since the barriers are spinning on 2 different sets of variables on consecutive barriers, there is no interference between the two and the number of spin loops reduces by half. (If they spin on the same variable, they would have to spin on sense variable at every barrier which is avoided now).
+
+-	Will tournament barrier algorithm work with processors that are not power of 2?
+
+	Yes, The algorithm (as presented in the pseudocode) will work with numbers of processors that aren't a power of 2.
