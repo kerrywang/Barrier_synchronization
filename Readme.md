@@ -232,7 +232,7 @@ Your tasks are the following:
 
 	Gnu files help plot these csv files.
 
--	What is Network.txt for?
+-	What is Network.txt and killerbee3_cpuinfo.txt for?
 
 	Use this information for analysis/reasoning of csv data if required.
 
@@ -304,3 +304,24 @@ sudo apt-get install gnuplot-nox
 -	Will tournament barrier algorithm work with processors that are not power of 2?
 
 	Yes, The algorithm (as presented in the pseudocode) will work with numbers of processors that aren't a power of 2.
+
+## Tips from a previous student
+
+1. First, get yourself a Linux system.  Either bare metal or a VM.  The one you used for project 1 will work.  There's also a VM you can download and install in VirtualBox that is linked in the project readme.  I'm using my project 1 VM. If you set up your own environment, make sure you install the libraries needed.
+
+2. Your tasks for MPI part of the project are:
+	1.	Complete the implementation of the dissemination algorithm in gtmpi_dissemination.c.
+	2.	Complete the implementation of the tournament algorithm in gtmpi_tournament.c.
+	3.	Improve the implementation of the counter in gtmpi_counter.c.
+	4.	Reply to the email Re:_MPI_Barrier.txt
+	
+3. Start with part 3.  It gives you a good overview of the MPI calls you will need, and it's working code to start.  Fixing this code will be simpler than starting parts 1 and 2 from scratch.
+
+4. Parts 1 and 2.  Here is where things get interesting and you have to decide on what you want to do.  You can follow the pseudo code, but that will leave you with a lot of ugly code as you try and shoehorn distributed memory code into the shared memory algorithm.
+
+5. From the project doc: Although Mellor-Crummey and Scott describe algorithms for a shared memory environment, it is straightforward to adapt them to a distributed one. Instead of spinning on a variable waiting for its value to be changed, a thread waits for a message from another thread.
+The key here is that you want to use a MPI message call (MPI_Isend, MPI_Irecv, MPI_Send, MPI_Recv) instead of spinning.  The simple and ugly way to do this is to merely replace the spinning parts of the pseudocode with blocking receive calls.  You then change the sense flips with a send call.
+
+6. But you can do better.  Use the pseudo code as reference but read the paper carefully.  Rewatch the barrier lectures and rethink the algorithm from a distributed memory point of view.  At what part does a node need to wait.  At what part does a node need to tell another that it's done. 
+
+7. **Testing**: The example code that you see in the readme is a skeleton for a test harness.  It's a main function that calls your implementations of the algorithms.  It's helpful to understand how MPI works, but it's very basic.
