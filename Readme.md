@@ -218,7 +218,7 @@ Your submission should have the following eight files. Do not change the name of
 -	 gtmpi_counter.c
 -	 Re:_MPI_Barrier.txt
 
-Zip all the eight files into a file named FirstName_LastName_p2.zip.
+Place all the eight files into a folder named FirstName_LastName_p2, and zip it. Zip file name should be the same as the folder name.
 
 ## Grading
 
