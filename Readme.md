@@ -198,12 +198,12 @@ Your tasks are the following:
 1. Complete the implementation of the dissemination algorithm in gtmpi_dissemination.c.
 2. Complete the implementation of the tournament algorithm in gtmpi_tournament.c.
 3. Improve the implementation of the counter in gtmpi_counter.c.
-4. Reply to the email Re:_MPI_Barrier.txt.
+4. Reply to the email Re:_MPI_Barrier.txt. (Add your insights in the same file)
     - Analyze GTMPI_Data.csv and provide your insights.
 5. Complete the implementation of the counter barrier in gtmp_counter.c
 6. Complete the implementation of the MCS tree in gtmp_mcs.c
 7. Improve the performance of the tree barrier implementation in gtmp_tree.c and explain why your implementation will run faster in the comments.
-8. Reply to the email in the file Re:_OpenMP_Barrier.txt.
+8. Reply to the email in the file Re:_OpenMP_Barrier.txt. (Add your insights in the same file)
     - Analyze GTMP_Data.csv and provide your insights.
 
 ## Deliverables
