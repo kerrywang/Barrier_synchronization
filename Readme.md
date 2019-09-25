@@ -102,7 +102,7 @@ The code for the project uses OpenMP for the shared memory experiments, but the 
 
 * [Wikipedia on OpenMP](http://en.wikipedia.org/wiki/OpenMP)
 * [Official OpenMP site](https://www.openmp.org/)
-* [Using OpenMP](http://mitpress.mit.edu/books/using-openmp) and [Examples (zip file)](openmp.org/wp-content/uploads/Using-OpenMP-Examples-Distr.zip)
+* [Using OpenMP](http://mitpress.mit.edu/books/using-openmp) and [Examples (zip file)](https://openmp.org/wp-content/uploads/Using-OpenMP-Examples-Distr.zip)
 * [Atomic Built-ins](http://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html)
 
 For sample code, check out [hello_openmp.c](https://github.gatech.edu/smathew60/oms-aos-barrier/blob/master/hello_openmp.c)
