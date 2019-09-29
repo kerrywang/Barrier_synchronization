@@ -217,7 +217,7 @@ Your submission should have the following eight files. Do not change the name of
 -	 gtmpi_tournament.c
 -	 gtmpi_counter.c
 -	 Re:_MPI_Barrier.txt
--  	 Makefile (If you have made any changes to the default one provided, like linking Math.h or using C99 standard)
+-  	 Makefile (If you have made any changes to the default flags/libraries, like linking Math.h or using C99 standard)
 
 Place all the eight files into a folder named FirstName_LastName_p2, and zip it. Zip file name should be the same as the folder name.
 
