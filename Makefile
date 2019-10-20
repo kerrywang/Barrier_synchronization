@@ -10,7 +10,7 @@ MPILIBS =
 #MPICC = /opt/openmpi-1.4.3-gcc44/bin/mpicc
 MPICC = mpicc
 
-hello_openmp: hello_openmp.c
+hello_openmp: hello_openmp.c gtmp_counter.c
 	$(CC) $(OMPFLAGS) -o $@ $^ $(OMPLIBS)
 
 hello_mpi: hello_mpi.c
