@@ -3,6 +3,7 @@
 #include <omp.h>
 #include "gtmp.h"
 
+
 /*
     From the MCS Paper: A scalable, distributed tree-based barrier with only local spinning.
 
@@ -43,68 +44,78 @@
 	    sense := not sense
 */
 typedef struct TreeNode {
-    bool* child_pointer[2];
-    bool parent_sense;
-    bool* parent_pointer;
-    bool have_child[4];
-    bool child_not_ready[4];
-    bool dummy;
+    uint* child_pointer[2];
+    uint parent_sense;
+    uint* parent_pointer;
+    uint have_child[4];
+    uint child_not_ready[4];
+    uint dummy;
 } TreeNode;
 
 TreeNode *shared_nodes;  // nodes[vpid] is allocated in shared memory locally accessible to processor vpid
-
+uint* senses;
 
 
 void gtmp_init(int num_threads){
     shared_nodes = malloc(sizeof(TreeNode) * num_threads);
+    senses = malloc(sizeof(uint) * num_threads);
     for (int i = 0; i < num_threads; i++) {
         // we need to prevent false sharing. force spin variables on seperate lines
         posix_memalign((void**)&shared_nodes[i], LEVEL1_DCACHE_LINESIZE, LEVEL1_DCACHE_LINESIZE);
-        shared_nodes[i].parent_sense = false;
+        shared_nodes[i].parent_sense = 0;
+        senses[i] = 1;
         for (int j = 0; j < 4; j++) {
             shared_nodes[i].have_child[j] = ((4 * i + j + 1) < num_threads);
             shared_nodes[i].child_not_ready[j] = shared_nodes[i].have_child[j];
         }
 
-        if (i == 0) shared_nodes[i].parent_pointer = &shared_nodes[i].dummy;
-        else shared_nodes[i].parent_pointer = &shared_nodes[floor((i-1)/4)].childnotready[(i-1) % 4];
+        if (i == 0) shared_nodes[i].parent_pointer = &(shared_nodes[i].dummy);
+        else shared_nodes[i].parent_pointer = &(shared_nodes[(int) ((i-1)/4)].child_not_ready[(i-1) % 4]);
 
-        if ((2 * i + 2) < num_threads) {
-            shared_nodes[i].child_pointer[0] = &shared_nodes[2 * i + 1].parent_sense;
-            shared_nodes[i].child_pointer[1] =  &shared_nodes[2 * i + 2].parent_sense;
+        // point to each child if valid
+        if ((2 * i + 1) < num_threads) {
+            shared_nodes[i].child_pointer[0] = &(shared_nodes[2 * i + 1].parent_sense);
         } else {
-            shared_nodes[i].child_pointer[0] = &shared_nodes[i].dummy;
-            shared_nodes[i].child_pointer[1] = &shared_nodes[i].dummy;
+            shared_nodes[i].child_pointer[0] = &(shared_nodes[i].dummy);
         }
 
+        if ((2 * i + 2) < num_threads) {
+            shared_nodes[i].child_pointer[1] = &(shared_nodes[2 * i + 2].parent_sense);
+        } else {
+            shared_nodes[i].child_pointer[1] = &(shared_nodes[i].dummy);
+        }
     }
 }
 
-void _copy_array(bool* to_copy, bool* )
+//void _copy_array(bool* to_copy, bool* )
 
 void gtmp_barrier(){
     int vpid = omp_get_thread_num();
-    bool local_sense = true;
+//    printf("thread id: %d finishes\n", vpid);
 
     // spin until the child are all ready
-    while (shared_nodes[vpid].child_not_ready[0] || shared_nodes[vpid].child_not_ready[1] || shared_nodes[vpid].child_not_ready[2] || shared_nodes[vpid].child_not_ready[3]) {}
+    while (shared_nodes[vpid].child_not_ready[0] || shared_nodes[vpid].child_not_ready[1] ||
+            shared_nodes[vpid].child_not_ready[2] || shared_nodes[vpid].child_not_ready[3]) {}
 
     // prepare for next barrier
     for (int i = 0; i < 4; i++) {
         shared_nodes[vpid].child_not_ready[i] = shared_nodes[vpid].have_child[i];
      }
 
-    *shared_nodes[vpid].parent_pointer = false;  //let parent know I'm ready
+    *(shared_nodes[vpid].parent_pointer) = 0;  //let parent know I'm ready
 
     // if not root, wait until my parent signals wakeup
     if (vpid != 0) {
-        while (local_sense != shared_nodes[vpid].parent_sense);
+        while (senses[vpid] != shared_nodes[vpid].parent_sense) {
+        }
     }
 
-    *shared_nodes[vpid].child_pointer[0] = local_sense;
-    *shared_nodes[vpid].child_pointer[1] = local_sense;
+    *(shared_nodes[vpid].child_pointer[0]) = senses[vpid];
+    *(shared_nodes[vpid].child_pointer[1]) = senses[vpid];
+    senses[vpid] = 1 - senses[vpid];
 }
 
 void gtmp_finalize(){
     free(shared_nodes);
+    free(senses);
 }

@@ -67,6 +67,8 @@ void gtmp_init(int num_threads){
   nodes = (node_t*) malloc(num_nodes * sizeof(node_t));
 
   for(i = 0; i < num_nodes; i++){
+    // [CHANGE] make sure each spin has its own cache line to avoid false sharing
+    posix_memalign((void**)&(nodes[i]), LEVEL1_DCACHE_LINESIZE, LEVEL1_DCACHE_LINESIZE);
     curnode = _gtmp_get_node(i);
     curnode->k = i < num_threads - 1 ? 2 : 1;
     curnode->count = curnode->k;
