@@ -13,7 +13,7 @@ MPICC = mpicc
 #hello_openmp: hello_openmp.c gtmp_tree.c
 #	$(CC) $(OMPFLAGS) -o $@ $^ $(OMPLIBS)
 
-hello_mpi: hello_mpi.c gtmpi_dissemination.c
+hello_mpi: hello_mpi.c gtmpi_tournament.c
 	$(MPICC) $(MPIFLAGS) -o $@ $^ $(MPILIBS)
 
 clean:

@@ -59,12 +59,13 @@ uint* senses;
 void gtmp_init(int num_threads){
     shared_nodes = malloc(sizeof(TreeNode) * num_threads);
     senses = malloc(sizeof(uint) * num_threads);
-    for (int i = 0; i < num_threads; i++) {
+    int i, j;
+    for (i = 0; i < num_threads; i++) {
         // we need to prevent false sharing. force spin variables on seperate lines
         posix_memalign((void**)&shared_nodes[i], LEVEL1_DCACHE_LINESIZE, LEVEL1_DCACHE_LINESIZE);
         shared_nodes[i].parent_sense = 0;
         senses[i] = 1;
-        for (int j = 0; j < 4; j++) {
+        for (j = 0; j < 4; j++) {
             shared_nodes[i].have_child[j] = ((4 * i + j + 1) < num_threads);
             shared_nodes[i].child_not_ready[j] = shared_nodes[i].have_child[j];
         }
@@ -98,7 +99,8 @@ void gtmp_barrier(){
             shared_nodes[vpid].child_not_ready[2] || shared_nodes[vpid].child_not_ready[3]) {}
 
     // prepare for next barrier
-    for (int i = 0; i < 4; i++) {
+    int i;
+    for (i = 0; i < 4; i++) {
         shared_nodes[vpid].child_not_ready[i] = shared_nodes[vpid].have_child[i];
      }
 

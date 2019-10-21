@@ -30,18 +30,18 @@ void gtmpi_init(int num_threads){
 
 void gtmpi_barrier(){
   int vpid, i;
-
+  static MPI_Status dummy_stats;
   MPI_Comm_rank(MPI_COMM_WORLD, &vpid);
   
-  for(i = 0; i < vpid; i++)
-    MPI_Send(NULL, 0, MPI_INT, i, 1, MPI_COMM_WORLD);
-  for(i = vpid + 1; i < P; i++)
-    MPI_Send(NULL, 0, MPI_INT, i, 1, MPI_COMM_WORLD);
-
-  for(i = 0; i < vpid; i++)
-    MPI_Recv(NULL, 0, MPI_INT, i, 1, MPI_COMM_WORLD, &status_array[i]);
-  for(i = vpid + 1; i < P; i++)
-    MPI_Recv(NULL, 0, MPI_INT, i, 1, MPI_COMM_WORLD, &status_array[i-1]);
+  if (vpid == 0) {
+      for (i = 1; i < P; i++)
+          MPI_Recv(NULL, 0, MPI_INT, i, 1, MPI_COMM_WORLD, &dummy_stats);
+      for (i = 1; i < P; i++)
+          MPI_Send(NULL, 0, MPI_INT, 0, 1, MPI_COMM_WORLD);
+  } else {
+      MPI_Send(NULL, 0, MPI_INT, 0, 1, MPI_COMM_WORLD);
+      MPI_Recv(NULL, 0, MPI_INT, 0, 1, MPI_COMM_WORLD, &dummy_stats);
+  }
 }
 
 void gtmpi_finalize(){
