@@ -15,3 +15,7 @@ a dedicated cluster with one process assigned to each node.
 Details individual nodes are attached along with the data from the experiments.
 
 Looking forward to your insight!
+
+One major flaw of this experiment is still due to its lack of scale. The maximum of 18 nodes is too little for meaningful and decisive conclusion.
+
+However, base on the data provided, It ca
