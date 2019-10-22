@@ -16,6 +16,19 @@ Details individual nodes are attached along with the data from the experiments.
 
 Looking forward to your insight!
 
-One major flaw of this experiment is still due to its lack of scale. The maximum of 18 nodes is too little for meaningful and decisive conclusion.
+---------------------------------------------------------------------------------
 
-However, base on the data provided, It ca
+One major flaw of this experiment is still due to its lack of scale.
+The maximum of 18 nodes is too little for meaningful and decisive conclusion.
+
+However, base on the data provided, It seems benificial to also test it on a non cache coherent architecture
+to examine the performance.
+
+By comparing the data to that of the open mp data, we can see, in larger scale, the centralized barrier performance
+decrease. I believe this is because in the MPI programming model, there no longer is a shared bus system to make sure the
+data is coherent. Therefore, algorithms such as dissemination and MCS will have a better performance as their critical
+path is log(N) vs the centralized O(N). The reason why centuralized version has better performance in open MP is because
+the built in synchronization renders the log(N) unnecssary
+
+I would assume dissemination perfrom well at a distributed system since it has a shorter cirtuit path.
+

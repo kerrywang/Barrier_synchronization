@@ -15,11 +15,27 @@ attached along with the data from the experiments.
 
 Looking forward to your insight!
 
+---------------------------------------------------------------------------------
 
-The results are indeed surprising, I am most surprising to see that mp counter has the dominating performance than the other more complex algorithm. Theoretically, although the counter algorithm is a simple algorithm, it is more prone to contention as multiple threads are spinning on a single trigger. My suspicion for the test is that the number of threads aren't a significant number. So the counting algorithm being an easy algorithm with little to no overhead might get away with the contention problem. In the letter, you mentioned that there are 24 cores in your machine and the maximum thread you are testing is 23. This might be the major reason for counter algorithm to have this better performance. 
 
-Also you might want to check the implementation of those algorithms, in particular, you may want to check if each spin takes up an entire cache block and that no two spins share the same cache line. Because if two spins share the same cache line they will invalidate each other when the update their status which will cause tremendous overhead. And since a lot of these algorithms are spinning on their own spin to avoid contention, this overhead will defeat the purpose of such design.
+The results are indeed surprising, I am most surprising to see that mp
+counter has the dominating performance than the other more complex algorithm.
+Theoretically, although the counter algorithm is a simple algorithm,
+it is more prone to contention as multiple threads are spinning on a single trigger.
+My suspicion for the test is that the number of threads aren't a significant number.
+So the counting algorithm being an easy algorithm with little to no overhead might get away with the contention problem.
+In the letter, you mentioned that there are 24 cores in your machine and the maximum thread you are testing is 23.
+This might be the major reason for counter algorithm to have this better performance.
 
-Moreover, it would also be useful to know the length of critical section of these test since with sufficiently long critical section, there might be a chance to eliminate some competition.
+Also you might want to check the implementation of those algorithms,
+in particular, you may want to check if each spin takes up an entire cache block and that no two spins share the same cache line.
+Because if two spins share the same cache line they will invalidate each other when the update their status which will cause tremendous overhead.
+And since a lot of these algorithms are spinning on their own spin to avoid contention, this overhead will defeat the purpose of such design.
 
-On the other hand, the performance of these barrier algorithms depend significantly on hardware architecture. If you are running it on a cache coherent system, No signi􏰗cant advantage arises from distributing writes across the memory since the machine's shared bus enforces an overall serialization. By reading the data, it is highly likely that the machine you are using is cache coherent. It bet things will be vastly different if you switch to a different Non cache coherent architecture.
+Moreover, it would also be useful to know the length of critical section of these test since with sufficiently long critical section,
+there might be a chance to eliminate some competition.
+
+On the other hand, the performance of these barrier algorithms depend significantly on hardware architecture.
+If you are running it on a cache coherent system, No signi􏰗cant advantage arises from distributing writes across the memory since the machine's shared bus enforces an overall serialization.
+By reading the data, it is highly likely that the machine you are using is cache coherent.
+I bet things will be vastly different if you switch to a different Non cache coherent architecture.

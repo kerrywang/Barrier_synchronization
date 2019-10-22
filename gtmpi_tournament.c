@@ -124,7 +124,6 @@ void gtmpi_barrier(){
     MPI_Status stat;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &vpid);
-    printf("entering barrier at vid: %d\n", vpid);
     while (1) {
         if (rounds[vpid][round].role == loser) {
             MPI_Send(NULL, 0, MPI_INT, rounds[vpid][round].opponent, 0, MPI_COMM_WORLD);

@@ -98,13 +98,13 @@ void gtmp_barrier(){
 void gtmp_barrier_aux(node_t* node, int sense){
   int test;
 
-#pragma omp critical
-{
-  test = node->count;
-  node->count--;
-}
-
-  if( 1 == test ){
+//#pragma omp critical
+//{
+//  test = node->count;
+//  node->count--;
+//}
+    // [CHANGE] use atomic operation to replace OMP critical section. Less overhead
+  if( __sync_fetch_and_sub(&node->count, 1) == 1 ){
     if(node->parent != NULL)
       gtmp_barrier_aux(node->parent, sense);
     node->count = node->k;
